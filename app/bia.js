@@ -3,14 +3,14 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Bot, Heart, Send, TrendingUp, Target } from "lucide-react"
+import { HelpCircle, Heart, Send, TrendingUp, Briefcase } from "lucide-react"
 
 const BIAPage = ({ user }) => {
   const [chatMessages, setChatMessages] = useState([
     {
       sender: "bia",
       message:
-        "Oi! Eu sou a BIA, sua assistente estudantil! 📚 Estou aqui para te ajudar com dicas de estudo, rotina e orientação profissional. Como posso te apoiar hoje?",
+        "Oi! Eu sou a BIA, sua assistente estudantil! Estou aqui para te ajudar com dicas de estudo, rotina e orientação profissional. Como posso te apoiar hoje?",
     },
   ])
   const [newMessage, setNewMessage] = useState("")
@@ -29,15 +29,15 @@ const BIAPage = ({ user }) => {
   const getBIAResponse = (message) => {
     const contextualResponses = [
       `Você já concluiu ${user?.mentoriasAssistidas || 0} mentorias! Que tal assistir a próxima?`,
-      "Lembre-se de revisar sua última mentoria para fixar o aprendizado! 📖",
-      "Para aumentar sua produtividade, tente usar a técnica Pomodoro: 25min focado + 5min pausa! ⏰",
-      `Você tem ${user?.xp || 0} XP! Continue assim para subir de nível! 🚀`,
-      "Que tal fazer uma pausa para alongar? Seu corpo e mente agradecem! 🧘‍♀️",
-      "Organize sua agenda de estudos. Planejamento é metade do sucesso! 📅",
-      "Você sabia? Estudar em grupos pode aumentar sua retenção em até 90%! 👥",
-      "Defina metas pequenas e alcançáveis. Cada vitória conta! 🎯",
-      "Beba água e mantenha-se hidratado durante os estudos! 💧",
-      "Que área profissional mais te interessa hoje? Posso te dar dicas específicas! 💼",
+      "Lembre-se de revisar sua última mentoria para fixar o aprendizado!",
+      "Para aumentar sua produtividade, tente usar a técnica Pomodoro: 25min focado + 5min pausa!",
+      `Você tem ${user?.xp || 0} XP! Continue assim para subir de nível!`,
+      "Que tal fazer uma pausa para alongar? Seu corpo e mente agradecem!",
+      "Organize sua agenda de estudos. Planejamento é metade do sucesso!",
+      "Você sabia? Estudar em grupos pode aumentar sua retenção em até 90%!",
+      "Defina metas pequenas e alcançáveis. Cada vitória conta!",
+      "Beba água e mantenha-se hidratado durante os estudos!",
+      "Que área profissional mais te interessa hoje? Posso te dar dicas específicas!",
     ]
     return contextualResponses[Math.floor(Math.random() * contextualResponses.length)]
   }
@@ -54,7 +54,7 @@ const BIAPage = ({ user }) => {
           <div className="bg-primaryOrange p-6 text-white rounded-t-2xl">
             <div className="flex items-center space-x-3">
               <div className="bg-white/20 w-12 h-12 rounded-full flex items-center justify-center">
-                <Bot className="h-6 w-6" />
+                <HelpCircle className="h-6 w-6" />
               </div>
               <div>
                 <h3 className="font-bold text-lg">BIA</h3>
@@ -124,7 +124,7 @@ const BIAPage = ({ user }) => {
           <CardContent className="p-4">
             <div className="flex items-center mb-3">
               <div className="bg-darkBlue w-8 h-8 rounded-full flex items-center justify-center mr-3">
-                <Target className="h-4 w-4 text-white" />
+                <Briefcase className="h-4 w-4 text-white" />
               </div>
               <h3 className="font-bold text-darkBlue text-sm">Orientação Profissional</h3>
             </div>

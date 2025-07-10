@@ -3,121 +3,167 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Clock, Star, Play } from "lucide-react"
+import { Clock, Star, Play, Lock, BookOpen, CheckCircle } from "lucide-react"
 
 const mentores = [
   {
     id: 1,
-    nome: "Equipe AMD E-Sports",
-    area: "E-Sports",
-    empresa: "AMD",
-    tempo: "45 min",
+    nome: "Bruna Legnaioli",
+    area: "Autoestima",
+    tempo: "35 min",
     avaliacao: 4.9,
-    participantes: 234,
-    foto: "/placeholder.svg?height=80&width=80",
-    cor: "#F57C42",
-    palavraChave: "ESTRATEGIA",
+    participantes: 156,
+    foto: "/angela-mezzetti.png", // Trocada: agora Bruna usa a foto da Angela
+    cor: "#D95E28",
+    palavraChave: "AUTOESTIMA",
     liberada: true,
+    descricao: "Desenvolva uma autoestima sólida e aprenda a valorizar suas qualidades únicas",
   },
   {
     id: 2,
-    nome: "Vanessa Braga",
-    area: "Contabilidade",
-    tempo: "50 min",
+    nome: "Angela Mezzetti",
+    area: "Sabotadores",
+    tempo: "40 min",
     avaliacao: 4.8,
-    participantes: 189,
-    foto: "/placeholder.svg?height=80&width=80",
-    cor: "#203A54",
-    palavraChave: "BALANCO",
+    participantes: 203,
+    foto: "/bruna-legnaioli.png", // Trocada: agora Angela usa a foto da Bruna
+    cor: "#A837A8",
+    palavraChave: "SABOTADORES",
     liberada: false,
+    descricao: "Identifique e supere os padrões mentais que limitam seu potencial",
   },
   {
     id: 3,
-    nome: "Stefanie Shimoze",
-    area: "Empreendedorismo Feminino",
-    tempo: "40 min",
+    nome: "Angela Mezzetti",
+    area: "Autoconhecimento",
+    tempo: "45 min",
     avaliacao: 4.9,
-    participantes: 156,
-    foto: "/placeholder.svg?height=80&width=80",
-    cor: "#F57C42",
-    palavraChave: "LIDERANCA",
-    liberada: false,
-  },
-  {
-    id: 4,
-    nome: "Renan Oliveira",
-    area: "Design",
-    tempo: "60 min",
-    avaliacao: 4.8,
-    participantes: 203,
-    foto: "/placeholder.svg?height=80&width=80",
+    participantes: 189,
+    foto: "/bruna-legnaioli.png", // Mantém a mesma foto da Angela (que agora é a da Bruna)
     cor: "#203A54",
-    palavraChave: "CRIATIVIDADE",
+    palavraChave: "AUTOCONHECIMENTO",
     liberada: false,
+    descricao: "Descubra quem você realmente é e qual seu propósito de vida",
   },
 ]
 
-export default function MentoriasPage({ onAssistirMentoria }) {
+export default function MentoriasPage({ user, onAssistirMentoria }) {
   return (
     <div className="space-y-6">
       <div className="text-center">
         <h1 className="text-3xl font-bold text-darkBlue mb-4">Mentorias</h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Aprenda com profissionais experientes e acelere seu crescimento
+          Jornada de desenvolvimento pessoal com especialistas renomadas
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {mentores.map((mentor) => (
-          <Card
-            key={mentor.id}
-            className="border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-hidden rounded-2xl"
-          >
-            <div className="h-2" style={{ backgroundColor: mentor.cor }} />
-            <CardContent className="p-6">
-              <div className="text-center mb-4">
-                <Avatar className="h-16 w-16 mx-auto mb-3 ring-4 ring-white shadow-lg">
-                  <AvatarImage src={mentor.foto || "/placeholder.svg"} alt={mentor.nome} />
-                  <AvatarFallback style={{ backgroundColor: mentor.cor, color: "white" }}>
-                    {mentor.nome
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <h3 className="text-lg font-bold text-darkBlue mb-1">{mentor.nome}</h3>
-                {mentor.empresa && <p className="text-sm text-gray-500 mb-2">{mentor.empresa}</p>}
-                <Badge style={{ backgroundColor: mentor.cor, color: "white" }} className="mb-2 rounded-full">
-                  {mentor.area}
-                </Badge>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {mentores.map((mentor, index) => {
+          const isLiberada = mentor.liberada || user?.mentoriasLiberadas?.includes(mentor.id - 1)
+          const jaAssistida = user?.mentoriasAssistidas >= mentor.id
 
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="h-4 w-4 mr-2" />
-                    {mentor.tempo}
+          return (
+            <Card
+              key={mentor.id}
+              className="border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-hidden rounded-2xl"
+            >
+              <div className="h-2" style={{ backgroundColor: mentor.cor }} />
+              <CardContent className="p-6">
+                <div className="text-center mb-4">
+                  <Avatar className="h-20 w-20 mx-auto mb-3 ring-4 ring-white shadow-lg">
+                    <AvatarImage src={mentor.foto || "/placeholder.svg"} alt={mentor.nome} className="object-cover" />
+                    <AvatarFallback style={{ backgroundColor: mentor.cor, color: "white" }}>
+                      {mentor.nome
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <h3 className="text-lg font-bold text-darkBlue mb-1">{mentor.nome}</h3>
+                  <Badge style={{ backgroundColor: mentor.cor, color: "white" }} className="mb-3 rounded-full">
+                    {mentor.area}
+                  </Badge>
+                  <p className="text-sm text-gray-600 mb-3 leading-relaxed">{mentor.descricao}</p>
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center text-gray-600">
+                      <Clock className="h-4 w-4 mr-2" />
+                      {mentor.tempo}
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Star className="h-4 w-4 mr-1 text-yellow-500" />
+                      {mentor.avaliacao}
+                    </div>
                   </div>
-                  <div className="flex items-center text-gray-600">
-                    <Star className="h-4 w-4 mr-1 text-yellow-500" />
-                    {mentor.avaliacao}
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500">{mentor.participantes} alunos participaram</p>
                   </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-xs text-gray-500">{mentor.participantes} alunos participaram</p>
-                </div>
-              </div>
 
-              <Button
-                onClick={() => onAssistirMentoria(mentor.id)}
-                className="w-full bg-primaryOrange hover:bg-orange-600 text-white rounded-xl group-hover:scale-105 transition-all duration-300"
-              >
-                <Play className="h-4 w-4 mr-2" />
-                Assistir Mentoria
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+                {jaAssistida && (
+                  <div className="bg-green-50 p-3 rounded-xl mb-4 text-center">
+                    <p className="text-sm text-green-700 font-medium flex items-center justify-center">
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                      Mentoria Concluída
+                    </p>
+                  </div>
+                )}
+
+                <Button
+                  onClick={() => onAssistirMentoria(mentor.id)}
+                  disabled={!isLiberada}
+                  className={`w-full rounded-xl group-hover:scale-105 transition-all duration-300 ${
+                    !isLiberada
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : jaAssistida
+                        ? "bg-green-500 hover:bg-green-600 text-white"
+                        : "bg-primaryOrange hover:bg-orange-600 text-white"
+                  }`}
+                >
+                  {!isLiberada ? (
+                    <>
+                      <Lock className="h-4 w-4 mr-2" />
+                      Complete a mentoria anterior
+                    </>
+                  ) : jaAssistida ? (
+                    <>
+                      <Play className="h-4 w-4 mr-2" />
+                      Assistir Novamente
+                    </>
+                  ) : (
+                    <>
+                      <Play className="h-4 w-4 mr-2" />
+                      Assistir Mentoria
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+          )
+        })}
+      </div>
+
+      <div className="bg-orange-50 p-6 rounded-2xl max-w-2xl mx-auto">
+        <h3 className="font-bold text-darkBlue mb-3 text-center flex items-center justify-center">
+          <BookOpen className="h-5 w-5 mr-2 text-primaryOrange" />
+          Sequência de Aprendizado
+        </h3>
+        <div className="space-y-2 text-sm text-gray-700">
+          <p>
+            <strong>1. Autoestima:</strong> Base fundamental para o desenvolvimento pessoal
+          </p>
+          <p>
+            <strong>2. Sabotadores:</strong> Identifique e supere limitações internas
+          </p>
+          <p>
+            <strong>3. Autoconhecimento:</strong> Descubra seu verdadeiro potencial
+          </p>
+        </div>
+        <p className="text-xs text-gray-500 mt-3 text-center">
+          Complete as mentorias em sequência para desbloquear o Teste DISC
+        </p>
       </div>
     </div>
   )

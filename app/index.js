@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import DashboardCards from "@/components/DashboardCards"
-import { Sparkles, Target, Users, Bot, Zap } from "lucide-react"
+import { Sparkles, Target, Users, HelpCircle, Zap } from "lucide-react"
 
 const IndexPage = ({ user, onPageChange }) => {
   return (
@@ -81,7 +81,7 @@ const IndexPage = ({ user, onPageChange }) => {
               className="bg-gradient-to-r from-primaryOrange to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white p-4 h-auto rounded-2xl group transition-all duration-300"
             >
               <div className="text-center">
-                <Bot className="h-6 w-6 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <HelpCircle className="h-6 w-6 mx-auto mb-2 group-hover:scale-110 transition-transform" />
                 <p className="font-semibold">Conversar com BIA</p>
                 <p className="text-xs opacity-75">Sua assistente</p>
               </div>

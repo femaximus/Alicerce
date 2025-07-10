@@ -111,47 +111,36 @@ const mentores: Mentor[] = [
 const missoes: Missao[] = [
   {
     id: 1,
-    titulo: "Estratégia de Time E-Sports",
-    descricao: "Desenvolva uma estratégia completa para um time fictício de e-sports",
-    prazo: "5 dias",
-    progresso: 60,
-    status: "Em andamento",
-    mentorArea: "E-Sports",
-    xpRecompensa: 200,
+    titulo: "Missão de Autoestima",
+    descricao: "Fale na frente do espelho durante uma semana: 'Eu sou incrível e eu confio em mim'",
+    prazo: "7 dias",
+    progresso: 0,
+    status: "Bloqueada",
+    mentorArea: "Autoestima",
+    xpRecompensa: 150,
     mentoriaId: 1,
   },
   {
     id: 2,
-    titulo: "Fluxo de Caixa Empresarial",
-    descricao: "Crie um fluxo de caixa detalhado para uma pequena empresa",
-    prazo: "3 dias",
+    titulo: "Missão de Sabotadores",
+    descricao: "Faça o teste de sabotadores proposto na mentoria e escreva sobre como pretende lidar com eles",
+    prazo: "5 dias",
     progresso: 0,
     status: "Bloqueada",
-    mentorArea: "Contabilidade",
-    xpRecompensa: 150,
+    mentorArea: "Sabotadores",
+    xpRecompensa: 200,
     mentoriaId: 2,
   },
   {
     id: 3,
-    titulo: "Plano de Negócio Social",
-    descricao: "Desenvolva um plano de negócio com foco em impacto social",
-    prazo: "7 dias",
+    titulo: "Missão 'Quem eu sou?'",
+    descricao: "Faça o teste presente na plataforma para descobrir mais sobre você",
+    prazo: "3 dias",
     progresso: 0,
     status: "Bloqueada",
-    mentorArea: "Empreendedorismo Feminino",
+    mentorArea: "Autoconhecimento",
     xpRecompensa: 250,
     mentoriaId: 3,
-  },
-  {
-    id: 4,
-    titulo: "Identidade Visual Completa",
-    descricao: "Crie uma identidade visual completa para uma startup",
-    prazo: "4 dias",
-    progresso: 0,
-    status: "Bloqueada",
-    mentorArea: "Design",
-    xpRecompensa: 180,
-    mentoriaId: 4,
   },
 ]
 
@@ -645,54 +634,23 @@ const formatarTextoOpcao = (texto: string, isPortrait: boolean, isMobile: boolea
 // No início do componente, após os imports, adicione a detecção de orientação:
 // const [isPortrait, setIsPortrait] = useState(false)
 
+const initialUser: UserType = {
+  id: "1",
+  nome: "Visitante",
+  email: "visitante@alicerce.com",
+  nivel: 3,
+  xp: 750,
+  xpProximoNivel: 1000,
+  mentoriasAssistidas: 0, // Começar sem mentorias assistidas
+  missoesCompletas: 0,
+  mentoriasLiberadas: [],
+}
+
 export default function AlicercePlatform() {
   const [currentPage, setCurrentPage] = useState<Page>("inicio")
   const [isMobile, setIsMobile] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
-  // Usuário visitante com nível baixo
-  const [user] = useState<UserType>({
-    id: "1",
-    nome: "Visitante",
-    email: "visitante@alicerce.com",
-    nivel: 3,
-    xp: 750,
-    xpProximoNivel: 1000,
-    mentoriasAssistidas: 1,
-    missoesCompletas: 0,
-    mentoriasLiberadas: [1],
-  })
-
-  // Estados para mentorias
-  const [mentoriaAssistindo, setMentoriaAssistindo] = useState<number | null>(null)
-  const [palavraChave, setPalavraChave] = useState("")
-  const [palavraChaveError, setPalavraChaveError] = useState("")
-
-  // Estados para missões
-  const [missaoIniciando, setMissaoIniciando] = useState<number | null>(null)
-
-  // Estados para testes
-  const [testeDISCIniciado, setTesteDISCIniciado] = useState(false)
-  const [testeVocacionalIniciado, setTesteVocacionalIniciado] = useState(false)
-  const [perguntaAtual, setPerguntaAtual] = useState(0)
-  const [respostas, setRespostas] = useState<number[]>([])
-
-  // Estados para teste DISC completo
-  const [rodadaAtual, setRodadaAtual] = useState(0)
-  const [respostasDISC, setRespostasDISC] = useState<Record<string, string>>({})
-
-  const [testeCompleto, setTesteCompleto] = useState(false)
-  const [resultadoTeste, setResultadoTeste] = useState("")
-
-  // Estados para chat com BIA
-  const [chatMessages, setChatMessages] = useState([
-    {
-      sender: "bia",
-      message:
-        "Oi! Eu sou a BIA, sua assistente estudantil! 📚 Estou aqui para te ajudar com dicas de estudo, rotina e orientação profissional. Como posso te apoiar hoje?",
-    },
-  ])
-  const [newMessage, setNewMessage] = useState("")
+  const [user, setUser] = useState<UserType>(initialUser)
 
   // Detectar mobile
   useEffect(() => {
@@ -705,14 +663,39 @@ export default function AlicercePlatform() {
   }, [])
 
   const handleAssistirMentoria = (mentorId: number) => {
-    alert("Mentoria assistida! Você ganhou 50 XP e liberou uma nova missão!")
+    setUser((prevUser) => {
+      const newMentoriasAssistidas = Math.max(prevUser.mentoriasAssistidas, mentorId)
+      const newXP = prevUser.xp + 100 // Ganhar 100 XP por mentoria
+      const newMentoriasLiberadas = [...prevUser.mentoriasLiberadas]
+
+      // Liberar próxima mentoria
+      if (mentorId < 3 && !newMentoriasLiberadas.includes(mentorId + 1)) {
+        newMentoriasLiberadas.push(mentorId + 1)
+      }
+
+      return {
+        ...prevUser,
+        mentoriasAssistidas: newMentoriasAssistidas,
+        xp: newXP,
+        mentoriasLiberadas: newMentoriasLiberadas,
+      }
+    })
+
+    alert(`Mentoria ${mentorId} assistida! Você ganhou 100 XP e liberou uma nova missão!`)
   }
 
   const handleIniciarMissao = (missaoId: number) => {
-    alert("Missão iniciada! Boa sorte!")
+    const missao = missoes.find((m) => m.id === missaoId)
+    if (missao) {
+      alert(`Missão "${missao.titulo}" iniciada! Boa sorte na sua jornada de desenvolvimento!`)
+    }
   }
 
   const handleIniciarTesteDISC = () => {
+    if (user.mentoriasAssistidas < 3) {
+      alert(`Você precisa completar as 3 mentorias primeiro. Progresso atual: ${user.mentoriasAssistidas}/3`)
+      return
+    }
     alert("Teste DISC iniciado!")
   }
 
@@ -729,11 +712,11 @@ export default function AlicercePlatform() {
       case "inicio":
         return <IndexPage user={user} onPageChange={setCurrentPage} />
       case "mentorias":
-        return <MentoriasPage onAssistirMentoria={handleAssistirMentoria} />
+        return <MentoriasPage user={user} onAssistirMentoria={handleAssistirMentoria} />
       case "missoes":
         return <MissoesPage user={user} onIniciarMissao={handleIniciarMissao} />
       case "teste-disc":
-        return <TesteDISCPage onIniciarTeste={handleIniciarTesteDISC} />
+        return <TesteDISCPage user={user} onIniciarTeste={handleIniciarTesteDISC} />
       case "teste-vocacional":
         return <TesteVocacionalPage user={user} onIniciarTeste={handleIniciarTesteVocacional} />
       case "perfil":

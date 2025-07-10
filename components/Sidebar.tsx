@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Home, Users, Target, BarChart3, Award, User, Bot } from "lucide-react"
+import { Home, Users, Target, BarChart3, Award, User, HelpCircle } from "lucide-react"
 
 interface SidebarProps {
   currentPage: string
@@ -14,7 +14,7 @@ const menuItems = [
   { id: "teste-disc", label: "Teste DISC", icon: BarChart3 },
   { id: "teste-vocacional", label: "Teste Vocacional", icon: Award },
   { id: "perfil", label: "Perfil", icon: User },
-  { id: "bia", label: "BIA", icon: Bot },
+  { id: "bia", label: "BIA", icon: HelpCircle },
 ]
 
 export default function Sidebar({ currentPage, onPageChange }: SidebarProps) {

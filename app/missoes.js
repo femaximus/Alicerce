@@ -3,52 +3,58 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Calendar, Target, Zap, CheckCircle, Play, Lock } from "lucide-react"
+import {
+  Calendar,
+  Target,
+  Zap,
+  CheckCircle,
+  Play,
+  Lock,
+  MonitorIcon as Mirror,
+  FileText,
+  User,
+  BookOpen,
+} from "lucide-react"
 
 const missoes = [
   {
     id: 1,
-    titulo: "Estratégia de Time E-Sports",
-    descricao: "Desenvolva uma estratégia completa para um time fictício de e-sports",
-    prazo: "5 dias",
-    progresso: 60,
-    status: "Em andamento",
-    mentorArea: "E-Sports",
-    xpRecompensa: 200,
-    mentoriaId: 1,
-  },
-  {
-    id: 2,
-    titulo: "Fluxo de Caixa Empresarial",
-    descricao: "Crie um fluxo de caixa detalhado para uma pequena empresa",
-    prazo: "3 dias",
-    progresso: 0,
-    status: "Bloqueada",
-    mentorArea: "Contabilidade",
-    xpRecompensa: 150,
-    mentoriaId: 2,
-  },
-  {
-    id: 3,
-    titulo: "Plano de Negócio Social",
-    descricao: "Desenvolva um plano de negócio com foco em impacto social",
+    titulo: "Missão de Autoestima",
+    descricao: "Fale na frente do espelho durante uma semana: 'Eu sou incrível e eu confio em mim'",
     prazo: "7 dias",
     progresso: 0,
     status: "Bloqueada",
-    mentorArea: "Empreendedorismo Feminino",
-    xpRecompensa: 250,
-    mentoriaId: 3,
+    mentorArea: "Autoestima",
+    xpRecompensa: 150,
+    mentoriaId: 1,
+    icon: Mirror,
+    detalhes: "Pratique diariamente por 7 dias consecutivos, de preferência pela manhã",
   },
   {
-    id: 4,
-    titulo: "Identidade Visual Completa",
-    descricao: "Crie uma identidade visual completa para uma startup",
-    prazo: "4 dias",
+    id: 2,
+    titulo: "Missão de Sabotadores",
+    descricao: "Faça o teste de sabotadores proposto na mentoria e escreva sobre como pretende lidar com eles",
+    prazo: "5 dias",
     progresso: 0,
     status: "Bloqueada",
-    mentorArea: "Design",
-    xpRecompensa: 180,
-    mentoriaId: 4,
+    mentorArea: "Sabotadores",
+    xpRecompensa: 200,
+    mentoriaId: 2,
+    icon: FileText,
+    detalhes: "Complete o teste e elabore um plano de ação personalizado",
+  },
+  {
+    id: 3,
+    titulo: "Missão 'Quem eu sou?'",
+    descricao: "Faça o teste presente na plataforma para descobrir mais sobre você",
+    prazo: "3 dias",
+    progresso: 0,
+    status: "Bloqueada",
+    mentorArea: "Autoconhecimento",
+    xpRecompensa: 250,
+    mentoriaId: 3,
+    icon: User,
+    detalhes: "Complete o teste de autoconhecimento disponível na plataforma",
   },
 ]
 
@@ -56,14 +62,17 @@ export default function MissoesPage({ user, onIniciarMissao }) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-darkBlue mb-4">Missões</h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">Coloque em prática o que aprendeu e ganhe XP</p>
+        <h1 className="text-3xl font-bold text-darkBlue mb-4">Missões de Desenvolvimento</h1>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Coloque em prática o que aprendeu nas mentorias e acelere seu crescimento pessoal
+        </p>
       </div>
 
       <div className="space-y-4">
         {missoes.map((missao) => {
-          const isLiberada = user?.mentoriasLiberadas?.includes(missao.mentoriaId) || missao.mentoriaId === 1
+          const isLiberada = user?.mentoriasAssistidas >= missao.mentoriaId
           const status = isLiberada ? (missao.status === "Bloqueada" ? "Disponível" : missao.status) : "Bloqueada"
+          const Icon = missao.icon
 
           return (
             <Card
@@ -74,7 +83,16 @@ export default function MissoesPage({ user, onIniciarMissao }) {
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
                     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-3 mb-3">
-                      <h3 className="text-xl font-bold text-darkBlue">{missao.titulo}</h3>
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            isLiberada ? "bg-primaryOrange" : "bg-gray-400"
+                          }`}
+                        >
+                          <Icon className="h-5 w-5 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold text-darkBlue">{missao.titulo}</h3>
+                      </div>
                       <Badge
                         className={`rounded-full text-xs w-fit ${
                           status === "Concluído"
@@ -89,7 +107,8 @@ export default function MissoesPage({ user, onIniciarMissao }) {
                         {status}
                       </Badge>
                     </div>
-                    <p className="text-gray-600 mb-4">{missao.descricao}</p>
+                    <p className="text-gray-600 mb-3 leading-relaxed">{missao.descricao}</p>
+                    <p className="text-sm text-gray-500 mb-4 italic">{missao.detalhes}</p>
                     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 text-sm text-gray-500">
                       <div className="flex items-center">
                         <Calendar className="h-4 w-4 mr-2" />
@@ -107,12 +126,21 @@ export default function MissoesPage({ user, onIniciarMissao }) {
                 </div>
 
                 {isLiberada && (
-                  <div className="space-y-3">
+                  <div className="space-y-3 mb-4">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium">Progresso</span>
                       <span className="font-bold text-darkBlue">{missao.progresso}%</span>
                     </div>
                     <Progress value={missao.progresso} className="h-3" />
+                  </div>
+                )}
+
+                {!isLiberada && (
+                  <div className="bg-orange-50 p-4 rounded-xl mb-4">
+                    <p className="text-sm text-orange-700 font-medium flex items-center">
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      Complete a mentoria "{missao.mentorArea}" para desbloquear esta missão
+                    </p>
                   </div>
                 )}
 
@@ -123,7 +151,7 @@ export default function MissoesPage({ user, onIniciarMissao }) {
                       onIniciarMissao(missao.id)
                     }
                   }}
-                  className={`w-full h-12 rounded-xl font-semibold transition-all duration-300 mt-4 ${
+                  className={`w-full h-12 rounded-xl font-semibold transition-all duration-300 ${
                     !isLiberada
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : status === "Concluído"
@@ -136,7 +164,7 @@ export default function MissoesPage({ user, onIniciarMissao }) {
                   {!isLiberada ? (
                     <>
                       <Lock className="h-5 w-5 mr-2" />
-                      Assista a mentoria primeiro
+                      Assista a mentoria "{missao.mentorArea}" primeiro
                     </>
                   ) : status === "Concluído" ? (
                     <>
@@ -159,6 +187,42 @@ export default function MissoesPage({ user, onIniciarMissao }) {
             </Card>
           )
         })}
+      </div>
+
+      <div className="bg-gradient-to-r from-orange-50 to-purple-50 p-6 rounded-2xl max-w-2xl mx-auto">
+        <h3 className="font-bold text-darkBlue mb-3 text-center flex items-center justify-center">
+          <Target className="h-5 w-5 mr-2 text-primaryOrange" />
+          Jornada de Transformação
+        </h3>
+        <div className="space-y-3 text-sm text-gray-700">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-primaryOrange rounded-full flex items-center justify-center">
+              <Mirror className="h-4 w-4 text-white" />
+            </div>
+            <div>
+              <p className="font-medium">Autoestima: Fortaleça sua confiança</p>
+              <p className="text-xs text-gray-500">Pratique afirmações positivas diariamente</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-secondaryPurple rounded-full flex items-center justify-center">
+              <FileText className="h-4 w-4 text-white" />
+            </div>
+            <div>
+              <p className="font-medium">Sabotadores: Identifique limitações</p>
+              <p className="text-xs text-gray-500">Conheça e supere seus padrões limitantes</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-darkBlue rounded-full flex items-center justify-center">
+              <User className="h-4 w-4 text-white" />
+            </div>
+            <div>
+              <p className="font-medium">Autoconhecimento: Descubra seu potencial</p>
+              <p className="text-xs text-gray-500">Entenda profundamente quem você é</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
