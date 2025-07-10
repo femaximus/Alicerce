@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Home, Users, Target, BarChart3, Award, User, HelpCircle } from "lucide-react"
+import { Home, Users, Target, BarChart3, Award, User } from "lucide-react"
 
 interface SidebarProps {
   currentPage: string
@@ -14,7 +14,7 @@ const menuItems = [
   { id: "teste-disc", label: "Teste DISC", icon: BarChart3 },
   { id: "teste-vocacional", label: "Teste Vocacional", icon: Award },
   { id: "perfil", label: "Perfil", icon: User },
-  { id: "bia", label: "BIA", icon: HelpCircle },
+  { id: "bia", label: "BIA", icon: null, isSpecial: true },
 ]
 
 export default function Sidebar({ currentPage, onPageChange }: SidebarProps) {
@@ -50,7 +50,18 @@ export default function Sidebar({ currentPage, onPageChange }: SidebarProps) {
                     }`}
                     onClick={() => onPageChange(item.id)}
                   >
-                    <Icon className="h-5 w-5 mr-3" />
+                    {item.isSpecial ? (
+                      <div className="w-5 h-5 mr-3 rounded-full overflow-hidden bg-primaryOrange border-2 border-white/30">
+                        <img
+                          src="/bia-avatar.png"
+                          alt="BIA"
+                          className="w-full h-full object-cover"
+                          style={{ backgroundColor: "#D95E28" }}
+                        />
+                      </div>
+                    ) : (
+                      <Icon className="h-5 w-5 mr-3" />
+                    )}
                     <span className="font-medium">{item.label}</span>
                   </Button>
                 </li>
