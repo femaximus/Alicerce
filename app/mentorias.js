@@ -57,7 +57,7 @@ export default function MentoriasPage({ user, onAssistirMentoria }) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {mentores.map((mentor, index) => {
           const isLiberada = mentor.liberada || user?.mentoriasLiberadas?.includes(mentor.id - 1)
           const jaAssistida = user?.mentoriasAssistidas >= mentor.id
@@ -68,9 +68,9 @@ export default function MentoriasPage({ user, onAssistirMentoria }) {
               className="border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-hidden rounded-2xl"
             >
               <div className="h-2" style={{ backgroundColor: mentor.cor }} />
-              <CardContent className="p-6">
-                <div className="text-center mb-4">
-                  <Avatar className="h-20 w-20 mx-auto mb-3 ring-4 ring-white shadow-lg">
+              <CardContent className="p-4 md:p-6">
+                <div className="text-center mb-3 md:mb-4">
+                  <Avatar className="h-16 w-16 md:h-20 md:w-20 mx-auto mb-3 ring-4 ring-white shadow-lg">
                     <AvatarImage src={mentor.foto || "/placeholder.svg"} alt={mentor.nome} className="object-cover" />
                     <AvatarFallback style={{ backgroundColor: mentor.cor, color: "white" }}>
                       {mentor.nome
@@ -79,21 +79,26 @@ export default function MentoriasPage({ user, onAssistirMentoria }) {
                         .join("")}
                     </AvatarFallback>
                   </Avatar>
-                  <h3 className="text-lg font-bold text-darkBlue mb-1">{mentor.nome}</h3>
-                  <Badge style={{ backgroundColor: mentor.cor, color: "white" }} className="mb-3 rounded-full">
+                  <h3 className="text-lg md:text-xl font-bold text-darkBlue mb-1">{mentor.nome}</h3>
+                  <Badge
+                    style={{ backgroundColor: mentor.cor, color: "white" }}
+                    className="mb-2 md:mb-3 rounded-full text-xs"
+                  >
                     {mentor.area}
                   </Badge>
-                  <p className="text-sm text-gray-600 mb-3 leading-relaxed">{mentor.descricao}</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-3 leading-relaxed px-2">
+                    {mentor.descricao}
+                  </p>
                 </div>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center justify-between text-sm">
+                <div className="space-y-2 mb-3 md:mb-4">
+                  <div className="flex items-center justify-between text-xs md:text-sm">
                     <div className="flex items-center text-gray-600">
-                      <Clock className="h-4 w-4 mr-2" />
+                      <Clock className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                       {mentor.tempo}
                     </div>
                     <div className="flex items-center text-gray-600">
-                      <Star className="h-4 w-4 mr-1 text-yellow-500" />
+                      <Star className="h-3 w-3 md:h-4 md:w-4 mr-1 text-yellow-500" />
                       {mentor.avaliacao}
                     </div>
                   </div>
@@ -103,9 +108,9 @@ export default function MentoriasPage({ user, onAssistirMentoria }) {
                 </div>
 
                 {jaAssistida && (
-                  <div className="bg-green-50 p-3 rounded-xl mb-4 text-center">
-                    <p className="text-sm text-green-700 font-medium flex items-center justify-center">
-                      <CheckCircle className="h-4 w-4 mr-2" />
+                  <div className="bg-green-50 p-2 md:p-3 rounded-xl mb-3 md:mb-4 text-center">
+                    <p className="text-xs md:text-sm text-green-700 font-medium flex items-center justify-center">
+                      <CheckCircle className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                       Mentoria Concluída
                     </p>
                   </div>
@@ -114,7 +119,7 @@ export default function MentoriasPage({ user, onAssistirMentoria }) {
                 <Button
                   onClick={() => onAssistirMentoria(mentor.id)}
                   disabled={!isLiberada}
-                  className={`w-full rounded-xl group-hover:scale-105 transition-all duration-300 ${
+                  className={`w-full rounded-xl group-hover:scale-105 transition-all duration-300 text-sm md:text-base py-2 md:py-3 ${
                     !isLiberada
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : jaAssistida
@@ -124,17 +129,17 @@ export default function MentoriasPage({ user, onAssistirMentoria }) {
                 >
                   {!isLiberada ? (
                     <>
-                      <Lock className="h-4 w-4 mr-2" />
+                      <Lock className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                       Complete a mentoria anterior
                     </>
                   ) : jaAssistida ? (
                     <>
-                      <Play className="h-4 w-4 mr-2" />
+                      <Play className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                       Assistir Novamente
                     </>
                   ) : (
                     <>
-                      <Play className="h-4 w-4 mr-2" />
+                      <Play className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                       Assistir Mentoria
                     </>
                   )}
